@@ -1,0 +1,54 @@
+import { useNavigate } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
+export default function Home(){
+const navigate =useNavigate();
+const [name,setname]=useState(()=>{
+    const n=localStorage.getItem("name");
+    return n!==null ? JSON.parse(n) : "" 
+});
+
+  const handelbutton = ()=>{
+        localStorage.setItem("name",JSON.stringify(name));
+        navigate("/question");
+   }
+
+    return(
+        <div className="min-h-screen flex justify-center items-center bg-gray-50" dir="rtl">
+             <div className="w-[400px] md:w-[600px] bg-white shadow-2xl p-8 rounded-2xl text-center">
+         <AnimatePresence>
+                     <motion.div
+                       initial={{ opacity: 0, x: 30 }}
+                       animate={{ opacity: 1, x: 0 }}
+                       exit={{ opacity: 0, x: -30 }}
+                       className="space-y-6"
+                     >
+                <div className="flex justify-center items-center">
+                <img src="/image/logo.JPG" width={"200px"}></img>
+                </div>
+        <div>
+            <h1 className="text-xl">العلوم الفزيائية والكيميائية </h1>
+            <h1 className="text-gray-500">المادة وتفاعلاتها </h1>
+        </div>
+        <div>
+            <input
+            value={name}
+            onChange={(event)=>{
+              setname(event.target.value);
+            }}  
+            className=" w-full px-2 py-3 text-center rounded-lg shadow-lg outline-0 outline-blue-600" placeholder="الاسم"></input>
+        </div>
+        <motion.button
+         whileTap={{ scale: 0.9 }}
+         onClick={handelbutton}
+         disabled={name==""}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed">{localStorage.getItem("name")!=null ? "إكمال الاسئلة" : "بداء الاسئلة"} </motion.button>
+        </motion.div>
+        </AnimatePresence>
+        </div>
+
+        </div>
+
+    )
+}
