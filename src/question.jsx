@@ -15,7 +15,11 @@ export default function Question(){
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(() => {
+  const saved = localStorage.getItem("isFinished");
+  return saved ? JSON.parse(saved) : false;
+});
+
   const [answers, setAnswers] = useState(() => {
   const saved = localStorage.getItem("answers");
   return saved ? JSON.parse(saved) : [];   // يبدأ بمصفوفة فارغة لو ما في بيانات
@@ -25,6 +29,9 @@ const [name,setname]=useState(()=>{
     return n!==null ? JSON.parse(n) : "" 
 });
 
+useEffect(() => {
+  localStorage.setItem("isFinished", JSON.stringify(isFinished));
+}, [isFinished]);
 
 useEffect(() => {
   localStorage.setItem("currentIndex", currentIndex);
@@ -49,8 +56,7 @@ useEffect(() => {
         id: questions[currentIndex].id,
         question: questions[currentIndex].question,
         options: questions[currentIndex].options,
-        correctAnswer:
-          questions[currentIndex].options[questions[currentIndex].correct],
+        correctAnswer: questions[currentIndex].options[questions[currentIndex].correct],
         studentAnswer: questions[currentIndex].options[selectedOption],
         correctIndex: questions[currentIndex].correct,
         studentIndex: selectedOption,
@@ -78,14 +84,14 @@ useEffect(() => {
 };
 
     function showimage(id) {
-  return [31].includes(id);
+  return [31,64,68,90].includes(id);
     }
 
 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex justify-center items-center p-5" dir="rtl">
-      <div className=" w-[400px] md:w-[800px] bg-white shadow-2xl p-8 rounded-2xl">
+      <div className=" w-[400px] md:w-[800px] bg-white shadow-2xl py-8 px-6 rounded-2xl">
         
         {/* ===================== الأسئلة ===================== */}
         {!isFinished && (
@@ -200,8 +206,8 @@ useEffect(() => {
                     >
                       <td className="p-2">{i + 1}</td>
                       <td className="p-2">{a.question}</td>
-                      <td className={`p-2 ${a.correctAnswer==a.studentAnswer ? "text-green-600" : "text-red-600"} `}>{a.id==31 ? (<img src={a.studentAnswer} width={"50px"}></img>) : a.studentAnswer}</td>
-                      <td className="p-2 text-green-600">{a.id==31 ? (<img src={a.correctAnswer} width={"50px"}></img>) : a.correctAnswer}</td>
+                      <td className={`p-2 ${a.correctAnswer==a.studentAnswer ? "text-green-600" : "text-red-600"} `}>{showimage(a.id) ? (<img src={a.studentAnswer} width={"50px"}></img>) : a.studentAnswer}</td>
+                      <td className="p-2 text-green-600">{showimage(a.id) ? (<img src={a.correctAnswer} width={"50px"}></img>) : a.correctAnswer}</td>
                       <td className="p-2">
                         {a.studentIndex === a.correctIndex ? (
                           <span className="text-green-600 text-xl">✔️</span>
