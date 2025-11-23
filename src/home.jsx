@@ -28,14 +28,14 @@ const [name,setname]=useState(()=>{
                 <img src="/image/logo.png" width={"200px"}></img>
                   <div className=" text-right text-emerald-900">
                     <p>إعداد :</p>
-                    <p>الاستاذة / رقية بنت حسين أحمد حامضي</p>
+                    <p>الاستاذة / رقية بنت حسين أحمد حامظي</p>
                     <p>ماجستير قياس وتقويم - بكالوريوس كيمياء</p>
                     <p>إدارة تعليم جازان - المملكة العربية السعودية</p>
                     </div>
                 
                 </div>
         <div>
-            <h1 className="text-xl">العلوم الفزيائية والكيميائية </h1>
+            <h1 className="text-xl">العلوم الفيزيائية والكيميائية </h1>
             <h1 className="text-gray-500">المادة وتفاعلاتها </h1>
         </div>
         <div>
@@ -44,7 +44,7 @@ const [name,setname]=useState(()=>{
             onChange={(event)=>{
               setname(event.target.value);
             }}  
-            className=" w-full px-2 py-3 text-center rounded-lg shadow-lg outline-0 outline-blue-600" placeholder="اسم الطالب"></input>
+            className=" w-full px-2 py-3 text-center rounded-lg shadow-lg outline-0 outline-blue-600" placeholder="اسم الطالبة"></input>
         </div>
         <motion.button
          whileTap={{ scale: 0.9 }}
