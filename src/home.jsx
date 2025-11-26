@@ -35,8 +35,8 @@ const [name,setname]=useState(()=>{
                 
                 </div>
         <div>
-            <h1 className="text-xl">العلوم الفيزيائية والكيميائية </h1>
-            <h1 className="text-gray-500">المادة وتفاعلاتها </h1>
+            <h1 className="text-xl">علوم الارض والفضاء</h1>
+            <h1 className="text-gray-500">الكون والنظام الشمسي , النظام الأرضي , الأرض والنشاط البشري </h1>
         </div>
         <div>
             <input
@@ -50,7 +50,7 @@ const [name,setname]=useState(()=>{
          whileTap={{ scale: 0.9 }}
          onClick={handelbutton}
          disabled={name==""}
-        className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed">{localStorage.getItem("name")!=null ? "إكمال الاسئلة" : "بداء الاسئلة"} </motion.button>
+        className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed">{name!=="" ? "إكمال الاسئلة" : "بداء الاسئلة"} </motion.button>
         </motion.div>
         </AnimatePresence>
         </div>
