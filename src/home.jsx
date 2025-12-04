@@ -8,7 +8,8 @@ const [name,setname]=useState(()=>{
     const n=localStorage.getItem("name");
     return n!==null ? JSON.parse(n) : "" 
 });
-
+const saved = localStorage.getItem("currentIndex");
+const chick = saved!==null ? parseInt(saved) : 0 ;
   const handelbutton = ()=>{
         localStorage.setItem("name",JSON.stringify(name));
         navigate("/question");
@@ -35,8 +36,8 @@ const [name,setname]=useState(()=>{
                 
                 </div>
         <div>
-            <h1 className="text-xl dark:text-white">علوم الارض والفضاء</h1>
-            <h1 className="text-gray-500 dark:text-gray-400">الكون والنظام الشمسي , النظام الأرضي , الأرض والنشاط البشري </h1>
+            <h1 className="text-xl dark:text-white">علوم الحياة </h1>
+            <h1 className="text-gray-500 dark:text-gray-400"> التركيب والوظيفة في المخلوقات الحية , تنظيم المخلوقات الحية وتنوعها , الوراثة</h1>
         </div>
         <div>
             <input
@@ -50,7 +51,7 @@ const [name,setname]=useState(()=>{
          whileTap={{ scale: 0.9 }}
          onClick={handelbutton}
          disabled={name==""}
-        className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed">{name!=="" ? "إكمال الاسئلة" : "بداء الاسئلة"} </motion.button>
+        className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed">{chick!==0 ? "إكمال الاسئلة" : "بدء الاسئلة"} </motion.button>
         </motion.div>
         </AnimatePresence>
         </div>

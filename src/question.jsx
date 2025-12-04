@@ -91,7 +91,7 @@ useEffect(() => {
 };
 
     function showimage(id) {
-  return [200].includes(id);
+  return [4,29].includes(id);
     }
 
 
@@ -144,11 +144,11 @@ useEffect(() => {
                       ${
                         selectedOption === idx
                           ? "bg-blue-500 text-white border-blue-600"
-                          : "bg-white dark:bg-slate-900 text-gray-800 hover:bg-blue-50"
+                          : "bg-white dark:bg-slate-900 text-gray-800 hover:bg-blue-50 dark:hover:bg-slate-700 "
                       }`}
                   >
                     <span className="font-bold ml-3">{idx ==0 ? "أ" : idx==1 ? "ب" : idx==2 ? "ج" : "د" } -</span>
-                    {showimage(questions[currentIndex].id) ? (<img src={option} width={"80px"}></img>) :  (<>{option}</>) }
+                    {showimage(questions[currentIndex].id) ? (<img src={option} width={"120px"}></img>) :  (<>{option}</>) }
                   </motion.button>
                 ))}
               </div>
