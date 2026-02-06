@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RefreshCcw,UserPen } from "lucide-react";
 import { useNavigate } from "react-router-dom"
 import { questions } from "./data/questions";
+import toast, { Toaster } from "react-hot-toast";
+
 
 
 
@@ -12,6 +14,16 @@ export default function Question(){
   const saved = localStorage.getItem("currentIndex");
   return saved !== null ? parseInt(saved) : 0;
 });
+
+const motivationMessages = [
+  "ممتاز! استمر بنفس الحماس 🚀",
+  "أداء جميل جدًا 👏 كمل!",
+  "خطوة جديدة نحو النجاح 🌟",
+  "تركيزك واضح، واصل 👌",
+  "كل سؤال يقربك للإنجاز 💪",
+  "رائع! السؤال التالي بانتظارك 🔥",
+];
+
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(() => {
@@ -56,6 +68,12 @@ useEffect(() => {
       setScore(score + 1);
     }
 
+    if((currentIndex+1)%10==0){
+    const msg =
+    motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
+    toast(msg, { icon: "🌟" });
+    }
+
     setAnswers((prev) => [
       ...prev,
       {
@@ -91,14 +109,22 @@ useEffect(() => {
 };
 
     function showimage(id) {
-  return [4,29].includes(id);
+  return [73,89,91,95,120,123,159,182].includes(id);
     }
 
 
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 flex justify-center items-center p-5" dir="rtl">
+    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 flex flex-col justify-center items-center p-5" dir="rtl">
+      {/* شريط التقدم */}
+<div className="w-[400px] md:w-[800px] mb-2 bg-gray-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+  <div
+    className="bg-blue-600 h-full transition-all duration-500"
+    style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+  />
+</div>
       <div className=" w-[400px] md:w-[800px] bg-white dark:bg-slate-800 shadow-2xl py-8 px-6 rounded-2xl">
+        <Toaster position="top-center" />
         
         {/* ===================== الأسئلة ===================== */}
         {!isFinished && (
@@ -237,6 +263,7 @@ useEffect(() => {
           </motion.div>
         )}
       </div>
+     <div className="text-center dark:text-white  p-3">جميع الحقوق محفوظة لدى المعلمة / رقية حسين حامظي <span className="text-[20px]">©</span> {new Date().getFullYear()}</div>
     </div>
   );
 }
