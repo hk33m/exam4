@@ -160,18 +160,28 @@ useEffect(() => {
       },
     ]);
 
-    if(currentIndex + 1 == questions.length-1){
-           toast("تبقى سوال واحد فقط تأكد من اسمك الكامل  الذي سيعرض على الشهادة !  ",
-  {
-    icon: <Check></Check>,
-    style: {
-      borderRadius: '10px',
-      background: 'green',
-      color: '#fff',
-    },
+     if (currentIndex+1 === questions.length - 1 && !isFinished) {
+    toast.custom((t) => (
+      <div className="bg-yellow-500 text-white p-4 rounded-xl shadow-lg w-[300px] text-center">
+        <h2 className="font-bold text-lg mb-2">تنبيه ⚠️</h2>
+        <p className="text-sm mb-3">
+          هذا هو السؤال الأخير<br />
+          يرجى التأكد من كتابة الاسم الكامل<br />
+          لأنه سيظهر في الشهادة 🎓
+        </p>
+
+        <button
+          onClick={() => toast.dismiss(t.id)}
+          className="bg-white text-yellow-600 px-4 py-1 rounded-lg font-bold"
+        >
+          إغلاق
+        </button>
+      </div>
+    ), {
+      duration: Infinity,   // يبقى ظاهر
+      position: "top-center"
+    });
   }
-);
-    }
 
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex(currentIndex + 1);
