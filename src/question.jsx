@@ -67,7 +67,7 @@ const downloadPDF = async () => {
       certRef.current.offsetHeight
     );
 
-    pdf.save("شهادة تدريب اختبار العلوم الكيميائية.pdf");
+    pdf.save("شهادة تدريب اختبار العلوم الفيزيائية.pdf");
 
   } catch (error) {
     console.error("خطأ في حفظ PDF:", error);
