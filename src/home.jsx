@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { ArrowBigRight } from "lucide-react";
 
 export default function Home(){
 const navigate =useNavigate();
@@ -9,10 +10,16 @@ const [name,setname]=useState(()=>{
     const n=localStorage.getItem("name");
     return n!==null ? JSON.parse(n) : "" 
 });
+const [school,setschool]=useState(()=>{
+    const n=localStorage.getItem("school");
+    return n!==null ? JSON.parse(n) : "" 
+});
+
 const saved = localStorage.getItem("currentIndex");
 const chick = saved!==null ? parseInt(saved) : 0 ;
   const handelbutton = ()=>{
         localStorage.setItem("name",JSON.stringify(name));
+        localStorage.setItem("school",JSON.stringify(school));
         navigate("/question");
    }
 
@@ -30,6 +37,10 @@ const isfinish = x!==null ? saved : false ;
                        exit={{ opacity: 0, x: -30 }}
                        className="space-y-6"
                      >
+                    <div className="flex gap-2 items-center cursor-pointer ">
+                    <ArrowBigRight onClick={()=>navigate("/")} className="w-6 h-6 text-gray-600 dark:text-gray-300 cursor-pointer"></ArrowBigRight>
+                    <h1 className=" dark:text-gray-300">خروج</h1>
+                    </div>
                 <div className="flex flex-col justify-center items-center">
                 <img src="/image/logo.png" width={"200px"}></img>
                   {/* <div className=" text-right text-emerald-900 dark:text-emerald-500 ">
@@ -50,12 +61,18 @@ const isfinish = x!==null ? saved : false ;
             onChange={(event)=>{
               setname(event.target.value);
             }}  
-            className=" w-full px-2 py-3 text-center dark:text-white rounded-lg shadow-lg outline-0 outline-blue-600" readOnly={x=="true"}   placeholder="اسم الطالبة"></input>
+            className=" w-full px-2 py-3 text-center dark:text-white rounded-md shadow-sm outline-0 outline-blue-600 mb-2" readOnly={x=="true"}   placeholder="اسم الطالب/ة"></input>
+            <input
+            value={school}
+            onChange={(event)=>{
+              setschool(event.target.value);
+            }}  
+            className=" w-full px-2 py-3 text-center dark:text-white rounded-md shadow-sm outline-0 outline-blue-600 mt-2" readOnly={x=="true"}   placeholder="اسم المدرسة"></input>
         </div>
         <motion.button
          whileTap={{ scale: 0.9 }}
          onClick={handelbutton}
-         disabled={name==""}
+         disabled={name==""||school==""}
         className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed">{chick==0 ? "بدء الاسئلة" : x=="true" ? "عرض النتيجة" : "إكمال الأسئلة"} </motion.button>
         </motion.div>
         </AnimatePresence>

@@ -7,6 +7,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { useRef } from "react";
 import { getDateTime } from "./dateTime";
 import { toPng } from 'html-to-image';
+import jsPDF from "jspdf";
+
 
 
 
@@ -41,6 +43,36 @@ const downloadCertificate = () => {
     });
 };
 
+const downloadPDF = async () => {
+  if (!certRef.current) return;
+
+  try {
+    const dataUrl = await toPng(certRef.current, {
+      cacheBust: true,
+      pixelRatio: 5, // جودة عالية
+    });
+
+    const pdf = new jsPDF({
+      orientation: "landscape", // عرضي للشهادة
+      unit: "mm",
+      format: [certRef.current.offsetWidth, certRef.current.offsetHeight],
+    });
+
+    pdf.addImage(
+      dataUrl,
+      "PNG",
+      0,
+      0,
+      certRef.current.offsetWidth,
+      certRef.current.offsetHeight
+    );
+
+    pdf.save("certificate.pdf");
+
+  } catch (error) {
+    console.error("خطأ في حفظ PDF:", error);
+  }
+};
 
 
 
@@ -80,19 +112,23 @@ const [name,setname]=useState(()=>{
     const n=localStorage.getItem("name");
     return n!==null ? JSON.parse(n) : "" 
 });
+const [school,setSchool]=useState(()=>{
+    const n=localStorage.getItem("school");
+    return n!==null ? JSON.parse(n) : "" 
+});
 
 const [hasShownToast, setHasShownToast] = useState(false);
 
   useEffect(() => {
     if (currentIndex === 0 && !hasShownToast) {
       toast(
-        '🌟 هيا بنا نبدأ! خذي نفسًا عميقًا وركزي 💖 أنتِ مستعدة لتبدعي 📝✨',
+        '🌟هيا بنا نبدأ! خذ نفسًا عميقًا وركز أنت مستعد لتبدع 📝✨',
         {
           duration: 7000,
           position: 'top-center',
           style: {
-            background: '#fff0f5',
-            color: '#d6336c',
+            background: '#ffef5',
+            color: 'black',
             fontWeight: 'bold',
             textAlign: 'center',
             borderRadius: '10px',
@@ -167,7 +203,7 @@ useEffect(() => {
 );
     }
 
-    if((trueq)%9==0 && trueq!=0){
+    if((currentIndex+1)%9==0 && currentIndex+1<questions.length && !isFinished){
     const msg =
     motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
     toast(msg, { icon: "🌟" });
@@ -250,16 +286,16 @@ useEffect(() => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 flex flex-col justify-center pt-14 items-center p-5" dir="rtl">
+    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 flex flex-col justify-center pt-14 items-center  p-5" dir="rtl">
      <audio ref={correctRef} src="/correct.wav" preload="auto" />
      <audio ref={wrongRef} src="/wrong.wav" preload="auto" />
 
       {/* شريط التقدم */}
-      <div className="flex gap-3 absolute top-3.5 right-4">
-                <h1 className="px-4 py-2 bg-green-800 text-white rounded-lg">إجابة صحيحة : {trueq}</h1>
-                <h1 className="px-4 py-2 bg-red-800 text-white rounded-lg">إجابة خاطئة : {falseq}</h1>
+      <div onClick={()=>{navigate("/");}} className="flex fixed gap-3 absolute top-[17px] right-4  bg-white dark:bg-slate-900 p-1 shadow-2xl rounded-md border-slate-900 dark:border-gray-100  cursor-pointer border text-slate-900 dark:text-white ">
+        البيانات الاساسية
+                <UserPen className="text-slate-900 dark:text-white" ></UserPen>
               </div>
-<div className="w-[400px] md:w-[800px] mb-2 bg-gray-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+<div className="w-[400px] md:w-[800px] mb-2 bg-gray-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden ">
   <div
     className="bg-blue-600 h-full transition-all duration-500"
     style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
@@ -278,23 +314,15 @@ useEffect(() => {
               exit={{ opacity: 0, x: -30 }}
               className="space-y-6"
             >
-              <div className="flex gap-1 justify-between">
+              <div className="flex gap-1 justify-between items-center">
               <h1 className="text-xl font-bold text-slate-900 dark:text-white">
                 السؤال {currentIndex + 1} / {questions.length}
               </h1>
               
-              <div className="flex gap-2">
-              {currentIndex>0 ?(
-                <RefreshCcw className="text-slate-900 dark:text-white" onClick={()=>{
-                if(confirm("هل تريد بالفعل بداء الاسئلة من جديد ؟")){
-                  resetQuiz();
-                }
-               }}></RefreshCcw>
-              ):(
-                ""
-              )}
-              
-                <UserPen className="text-slate-900 dark:text-white" onClick={()=>{navigate("/");}}></UserPen>
+              <div className="flex gap-1 ">
+               <h1 className="px-4 py-2 bg-green-800 text-white rounded-lg">صح  : {trueq}</h1>
+                <h1 className="px-4 py-2 bg-red-800 text-white rounded-lg">خطأ  : {falseq}</h1>
+               
                </div>
                  </div>
                 {questions[currentIndex].url !="" && (<div><img src={questions[currentIndex].url} width={"400px"}></img> </div>) }
@@ -371,7 +399,7 @@ useEffect(() => {
                     <th className="p-2">#</th>
                     <th className="p-2">السؤال</th>
                     <th className="p-2">إجابتك</th>
-                    <th className="p-2">الصحيح</th>
+                    {/* <th className="p-2">الصحيح</th> */}
                     <th className="p-2">الحالة</th>
                   </tr>
                 </thead>
@@ -384,7 +412,7 @@ useEffect(() => {
                       <td className="p-2 dark:text-white">{i + 1}</td>
                       <td className="p-2 dark:text-white">{a.question}</td>
                       <td className={`p-2 ${a.correctAnswer==a.studentAnswer ? "text-green-600" : "text-red-600"} `}>{showimage(a.id) ? (<img src={a.studentAnswer} width={"50px"}></img>) : a.studentAnswer}</td>
-                      <td className="p-2 text-green-600">{showimage(a.id) ? (<img src={a.correctAnswer} width={"50px"}></img>) : a.correctAnswer}</td>
+                      {/* <td className="p-2 text-green-600">{showimage(a.id) ? (<img src={a.correctAnswer} width={"50px"}></img>) : a.correctAnswer}</td> */}
                       <td className="p-2">
                         {a.studentIndex === a.correctIndex ? (
                           <span className="text-green-600 text-xl">✔️</span>
@@ -406,18 +434,20 @@ useEffect(() => {
     ref={certRef}
    className="relative"
   >
-  <img src="image/sh.jpeg" className="shadow-lg border border-blue-800"></img>
+  <img src="image/sh.png" className="shadow-lg border border-blue-800"></img>
 
-  <div className="absolute top-6 md:top-16 text-center w-full">
-    <h1 className="text-[11px] md:text-xl font-bold">شهادة إتمام تدريب</h1>
-    <h1  className="text-[10px] md:text-xl">Certificate of Training Completion</h1>
-    <div className="mt-4 md:mt-10 text-[9px] space-y-1 md:space-y-2  md:text-xl">
-      <h1>تشهد منصة تدريب اختبار نافس بأن  </h1>
-      <h1 className="text-right mr-[32%] md:mr-[31%]">الطالبة : <span className="text-amber-700 font-bold">{name}</span> </h1>
+  <div className="absolute top-8 md:top-19 text-center w-full">
+    <h1 className="text-[11px] md:text-xl font-bold text-cyan-800">شهادة إتمام تدريب</h1>
+    <h1  className="text-[10px] md:text-xl text-yellow-600">Certificate of Training Completion</h1>
+    
+    <div className="mt-1 md:mt-2 text-[9px] space-y-1 md:space-y-2  md:text-xl">
+      <h1 className="">تشهد منصة تدريب اختبار نافس بأن  </h1>
+      <h1 className="text-right mr-[32%] md:mr-[31%]">الطالب/ـة : <span className="text-cyan-700 font-bold">{name}</span> </h1>
+      <h1>من مدرسة : {school}</h1>
       <h1>الصف : الثالث المتوسط</h1>
-      <h1>قد أتمت تدريب مادة العلوم بنجاح</h1>
+      <h1>قد أتم تدريب مادة العلوم بنجاح</h1>
       <h1>فرع : العلوم الفيزيائية</h1>
-     <h1 className="text-amber-700 font-bold">
+     <h1 className="text-cyan-700 font-bold">
   الدرجة : {score} / {questions.length} بنسبة  (
     {(() => {
       const percentage = (Number(score) / Number(questions.length)) * 100;
@@ -426,23 +456,30 @@ useEffect(() => {
     })()} %
   )
 </h1>
-      <div className="flex px-8 gap-1 justify-center mt-1 pl-4 text-gray-600">
-        <h1 className="bg-white shadow-lg px-2 py-1 rounded-md"> {JSON.parse(localStorage.getItem("datash")).day}  </h1>
-        <h1 className="bg-white shadow-lg px-2 py-1 rounded-md"> {JSON.parse(localStorage.getItem("datash")).time}  </h1>
-        <h1 className="bg-white shadow-lg px-2 py-1 rounded-md"> {JSON.parse(localStorage.getItem("datash")).date} م</h1>
+      <div className="flex  px-8 gap-1 justify-center mt-1 pl-4 text-gray-600">
+        <h1 className="bg-white shadow-sm px-2 py-1 rounded-md"> {JSON.parse(localStorage.getItem("datash")).day}  </h1>
+        <h1 className="bg-white shadow-sm px-2 py-1 rounded-md"> {JSON.parse(localStorage.getItem("datash")).time}  </h1>
+        <h1 className="bg-white shadow-sm px-2 py-1 rounded-md"> {JSON.parse(localStorage.getItem("datash")).date} م</h1>
       </div>
     </div>
   </div>
-  <img src="image/nafs.png" className="w-[50px] md:w-[100px] absolute top-[21px] md:top-[50px] left-[30px] md:left-[66px]"></img>
+  
   </div>
 
-<div className="flex gap-2">
+<div className="flex flex-col gap-2">
   <button
     onClick={downloadCertificate}
     className="bg-green-600 hover:bg-green-700 text-white px-6 flex gap-2 justify-center items-center py-3 rounded-xl shadow-lg"
   >
     حفظ الشهادة في المعرض <Download></Download>
   </button>
+  <button
+    onClick={downloadPDF}
+    className="bg-red-600 hover:bg-red-700 text-white px-6 flex gap-2 justify-center items-center py-3 rounded-xl shadow-lg"
+  >
+    حفظ   PDF <Download></Download>
+  </button>
+
   
   </div>
   <button

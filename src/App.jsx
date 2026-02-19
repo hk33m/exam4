@@ -38,9 +38,10 @@ function App() {
   return(
  
     <div>
-      <button onClick={toggleTheme}  className="flex fixed top-4 left-4 bg-white dark:bg-slate-900 p-1 shadow-2xl rounded-md border-slate-900 dark:border-gray-100 border text-slate-900 dark:text-white  ">
+      <button onClick={toggleTheme}  className="flex fixed top-4 left-4 bg-white dark:bg-slate-900 p-1 shadow-2xl rounded-md border-slate-900 dark:border-gray-100 border text-slate-900 dark:text-white cursor-pointer"> 
        {theme=="light"?(<Moon></Moon>):(<Sun></Sun>)}
       </button>
+      
       <Routes>
         <Route path="/" element={<Home></Home>} ></Route>
         <Route path="/Question" element={<Question></Question>} ></Route>
