@@ -5,6 +5,7 @@ import Home from "./home";
 import { useState, useEffect } from "react";
 import { Sun,Moon } from "lucide-react";
 
+
 function App() {
    const [theme, setTheme] = useState("light");
    
@@ -43,8 +44,8 @@ function App() {
       </button>
       
       <Routes>
-        <Route path="/" element={<Home></Home>} ></Route>
         <Route path="/Question" element={<Question></Question>} ></Route>
+        <Route path="/" element={<Home></Home>} ></Route>
         <Route path="/*" element={<Home></Home>} ></Route>
       </Routes>
     </div>

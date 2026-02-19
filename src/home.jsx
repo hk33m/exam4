@@ -39,7 +39,7 @@ const isfinish = x!==null ? saved : false ;
                      >
                     <div className="flex gap-2 items-center cursor-pointer ">
                     <ArrowBigRight onClick={()=>navigate("/")} className="w-6 h-6 text-gray-600 dark:text-gray-300 cursor-pointer"></ArrowBigRight>
-                    <h1 className=" dark:text-gray-300">خروج</h1>
+                    <a href="http://nafsexam.vercel.app/"><h1 className=" dark:text-gray-300">خروج</h1></a>
                     </div>
                 <div className="flex flex-col justify-center items-center">
                 <img src="/image/logo.png" width={"200px"}></img>

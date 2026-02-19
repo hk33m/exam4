@@ -67,7 +67,7 @@ const downloadPDF = async () => {
       certRef.current.offsetHeight
     );
 
-    pdf.save("certificate.pdf");
+    pdf.save("شهادة تدريب اختبار العلوم الكيميائية.pdf");
 
   } catch (error) {
     console.error("خطأ في حفظ PDF:", error);
@@ -291,7 +291,7 @@ useEffect(() => {
      <audio ref={wrongRef} src="/wrong.wav" preload="auto" />
 
       {/* شريط التقدم */}
-      <div onClick={()=>{navigate("/");}} className="flex fixed gap-3 absolute top-[17px] right-4  bg-white dark:bg-slate-900 p-1 shadow-2xl rounded-md border-slate-900 dark:border-gray-100  cursor-pointer border text-slate-900 dark:text-white ">
+      <div onClick={()=>{navigate("/home");}} className="flex fixed gap-3 absolute top-[17px] right-4  bg-white dark:bg-slate-900 p-1 shadow-2xl rounded-md border-slate-900 dark:border-gray-100  cursor-pointer border text-slate-900 dark:text-white ">
         البيانات الاساسية
                 <UserPen className="text-slate-900 dark:text-white" ></UserPen>
               </div>
