@@ -21,7 +21,7 @@ export const questions = [
       "السرعة المتجهة",
       "السرعة اللحظية"
     ],
-    "correct": 2
+    "correct": 1
   },
   {
     "id": 3,
